@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <%= t.include("partials/_head.html", grunt.data.json) %>
+    <% var speech = grunt.data.archieml.speech.speech;%>
+    <link rel="stylesheet" type="text/css" href="style.css">
+  </head>
+  <body>
+    <main class="speech">
+    <% speech.forEach(function(block, i) {
+      if (block.type == "text") {
+        %>
+       <p><%= t.renderMarkdown(block.value) %></p>
+        <%
+      } else {
+        %>
+       
+      <div id="<%= block.value.id %>" class="annotation">
+        <div class="annotations-wrapper">
+        <p><%= t.renderMarkdown(block.value.text) %></p>
+      </div>
+      <div class="annotation-header">
+        <img class="annotation-label" src="">
+        <div class="annotation-byline">
+          <a target="_blank" class="byline-name" href=""><%= block.value.author %></a>
+          <span class="byline-role"><%= block.value.role %></span>
+        </div>
+      </div>
+      <div class="annotation-nav">
+        <a class="previousNav" href="">
+          <span class="triangleIcon">▲</span> 
+          <span class="navText">Previous annotation</span>
+        </a>
+        <a class="nextNav" href="">
+          <span class="navText">Next annotation</span>
+          <span class="triangleIcon">▼</span>
+        </a>
+      </div>
+    </div>
+        <%
+       }
+    }); %>
+    <script src="app.js" async></script>
+    <%= t.include("partials/_analytics.html") %>
+  </main>
+  </body>
+</html>
