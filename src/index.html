@@ -1,47 +1,57 @@
+<% 
+  var speech = grunt.data.archieml.speech.speech;
+  var annotations = speech.filter(b => b.type == "annotation");
+%>
 <!doctype html>
 <html lang="en-US">
-  <head>
-    <%= t.include("partials/_head.html", grunt.data.json) %>
-    <% var speech = grunt.data.archieml.speech.speech;%>
-    <link rel="stylesheet" type="text/css" href="style.css">
-  </head>
-  <body>
-    <main class="speech">
+<head>
+  <%= t.include("partials/_head.html", grunt.data.json) %>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+  <main class="speech">
     <% speech.forEach(function(block, i) {
+      var annoIndex = annotations.indexOf(block);
+      var previous = annotations[annoIndex - 1];
+      var next = annotations[annoIndex + 1];
       if (block.type == "text") {
-        %>
-       <p><%= t.renderMarkdown(block.value) %></p>
-        <%
+        print(t.renderMarkdown(block.value))
       } else {
         %>
-       
-      <div id="<%= block.value.id %>" class="annotation">
-        <div class="annotations-wrapper">
-        <p><%= t.renderMarkdown(block.value.text) %></p>
-      </div>
-      <div class="annotation-header">
-        <img class="annotation-label" src="">
-        <div class="annotation-byline">
-          <a target="_blank" class="byline-name" href=""><%= block.value.author %></a>
-          <span class="byline-role"><%= block.value.role %></span>
-        </div>
-      </div>
-      <div class="annotation-nav">
-        <a class="previousNav" href="">
-          <span class="triangleIcon">▲</span> 
-          <span class="navText">Previous annotation</span>
-        </a>
-        <a class="nextNav" href="">
-          <span class="navText">Next annotation</span>
-          <span class="triangleIcon">▼</span>
-        </a>
-      </div>
-    </div>
+
+        <aside id="<%= block.value.id %>" class="annotation">
+          <div class="annotations-wrapper">
+            <p><%= t.renderMarkdown(block.value.text) %></p>
+          </div>
+          <div class="annotation-header">
+            <% if (block.mug) { %>
+            <img class="annotation-label" src="<%= block.mug %>">
+            <% } %>
+            <div class="annotation-byline">
+              <a target="_blank" class="byline-name" href="<%= block.value.page %>">
+                <%= block.value.author %>
+              </a>
+              <span class="byline-role"><%= block.value.role %></span>
+            </div>
+          </div>
+          <div class="annotation-nav">
+            <% if (previous) { %>
+            <a class="jump previous" href="#<%= previous.value.id %>">
+              ▲ Previous annotation
+            </a>
+            <% } %>
+            <% if (next) { %>
+            <a class="jump next" href="#<%= next.value.id %>">
+              Next annotation ▼
+            </a>
+            <% } %>
+          </div>
+        </aside>
         <%
-       }
+      }
     }); %>
     <script src="app.js" async></script>
     <%= t.include("partials/_analytics.html") %>
   </main>
-  </body>
+</body>
 </html>

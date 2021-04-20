@@ -7,7 +7,7 @@ console.log($);
 
 var updateAnnotations = function (newSpeech) {
   var from = $.one("main.speech");
-  console.log(from, newSpeech)
+  console.log(from, newSpeech);
   morphdom(from, newSpeech, {});
 };
 
@@ -19,8 +19,7 @@ var refresh = async function () {
     if (!updated) return;
     var speech = $.one("main.speech", updated);
 
-    if (!speech)
-      return console.log("Remote document was missing content.");
+    if (!speech) return console.log("Remote document was missing content.");
     updateAnnotations(speech);
   } catch (err) {
     console.error(err);
