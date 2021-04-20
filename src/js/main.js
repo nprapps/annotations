@@ -1,25 +1,27 @@
 // require("./lib/pym");
 var morphdom = require("morphdom");
 var getDocument = require("./getDocument");
-var events = require("./events");
+var flags = require("./flags");
 var $ = require("./lib/qsa");
-console.log($);
+var container = $.one("main.speech");
 
 var updateAnnotations = function (newSpeech) {
-  var from = $.one("main.speech");
-  console.log(from, newSpeech);
-  morphdom(from, newSpeech, {});
+  // collect annotations that have been seen before
+  var tagged = $("[data-seen]");
+  morphdom(container, newSpeech, {});
+  // put those attributes back
+  tagged.forEach(el => el.dataset.seen = true);
 };
 
 var refresh = async function () {
-  events.send("updating");
   try {
     var updated = await getDocument(window.location.href);
     // updated will be null if the response was a 304
     if (!updated) return;
-    var speech = $.one("main.speech", updated);
 
-    if (!speech) return console.log("Remote document was missing content.");
+    var speech = $.one("main.speech", updated);
+    if (!speech) throw "Remote document was missing content.";
+    
     updateAnnotations(speech);
   } catch (err) {
     console.error(err);
@@ -28,4 +30,4 @@ var refresh = async function () {
   // TODO: maybe add event send/update code here
 };
 
-setInterval(refresh, 2 * 1000);
+setInterval(refresh, flags.refresh * 1000);
