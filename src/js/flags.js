@@ -25,6 +25,4 @@ for (var k in flags) {
   }
 }
 
-console.log(resolved);
-
 module.exports = resolved;

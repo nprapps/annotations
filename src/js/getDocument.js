@@ -10,7 +10,6 @@ module.exports = function(url) {
     }
     xhr.send();
     xhr.onload = function() {
-      console.log(xhr)
       if (xhr.status == 304) {
         console.log("Annotations haven't changed since last request");
         return ok(null);
