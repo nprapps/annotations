@@ -16,7 +16,7 @@
       var next = annotations[annoIndex + 1];
       if (block.type == "text") {
         print(t.renderMarkdown(block.value))
-      } else {
+      } else if (block.value.published == 'Yes') {
         %>
 
         <aside id="<%= block.value.id %>" class="annotation">
