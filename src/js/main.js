@@ -1,4 +1,6 @@
-// require("./lib/pym");
+// observable annotation elements
+require("./observed-annotation");
+
 var morphdom = require("morphdom");
 var getDocument = require("./getDocument");
 var flags = require("./flags");

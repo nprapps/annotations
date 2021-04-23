@@ -19,7 +19,7 @@
       } else if (block.value.published == 'Yes') {
         %>
 
-        <aside id="<%= block.value.id %>" class="annotation">
+        <observed-annotation id="<%= block.value.id %>" class="annotation" role="complementary">
           <div class="annotations-wrapper">
             <p><%= t.renderMarkdown(block.value.text) %></p>
           </div>
@@ -46,7 +46,7 @@
             </a>
             <% } %>
           </div>
-        </aside>
+        </observed-annotation>
         <%
       }
     }); %>
