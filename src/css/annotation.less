@@ -1,0 +1,50 @@
+.annotation {
+  display: block;
+  margin: 24px 0;
+
+  .content {
+    padding: 16px;
+    background: @quote-gray;
+    border: 1px solid @quote-border;
+  }
+
+  .metadata {
+    display: flex;
+    align-items: center;
+
+    .mugshot {
+      flex: 0 0 70px;
+      margin-right: 8px;
+
+      img {
+        display: block;
+        max-height: 70px;
+      }
+    }
+
+    .byline {
+      flex: 1;
+    }
+  }
+
+  .navigation {
+    padding: 8px;
+    font-size: 90%;
+    .gotham();
+    color: @text-gray;
+    overflow: hidden;
+
+    a {
+      color: inherit;
+      float: left;
+
+      &:hover, &:focus {
+        color: black;
+      }
+
+      &.next {
+        float: right;
+      }
+    }
+  }
+}

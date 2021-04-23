@@ -1,6 +1,6 @@
 <% 
   var speech = grunt.data.archieml.speech.speech;
-  var annotations = speech.filter(b => b.type == "annotation");
+  var annotations = speech.filter(b => b.type == "annotation" && b.value.published);
 %>
 <!doctype html>
 <html lang="en-US">
@@ -16,25 +16,29 @@
       var next = annotations[annoIndex + 1];
       if (block.type == "text") {
         print(t.renderMarkdown(block.value))
-      } else if (block.value.published == 'Yes') {
+      } else if (block.value.published) {
         %>
 
         <observed-annotation id="<%= block.value.id %>" class="annotation" role="complementary">
-          <div class="annotations-wrapper">
-            <p><%= t.renderMarkdown(block.value.text) %></p>
-          </div>
-          <div class="annotation-header">
-            <% if (block.mug) { %>
-            <img class="annotation-label" src="<%= block.mug %>">
-            <% } %>
-            <div class="annotation-byline">
-              <a target=<%= block.value.page %> class="byline-name" href="<%= block.value.page %>">
-                <%= block.value.author %>
-              </a>
-              <span class="byline-role"><%= block.value.role %></span>
+          <div class="content">
+
+            <%= t.renderMarkdown(block.value.text) %>
+            
+            <div class="metadata">
+              <% if (block.mug) { %>
+              <div class="mugshot">
+                <img src="<%= block.mug %>">
+              </div>
+              <% } %>
+              <div class="byline">
+                <a target="<%= block.value.page %>" class="name" href="<%= block.value.page %>">
+                  <%= block.value.author %>
+                </a>
+                <div class="role"><%= block.value.role %></div>
+              </div>
             </div>
           </div>
-          <div class="annotation-nav">
+          <div class="navigation">
             <% if (previous) { %>
             <a class="jump previous" href="#<%= previous.value.id %>">
               ▲ Previous annotation
