@@ -8,11 +8,11 @@ var observer = new IntersectionObserver(function(list) {
 
 class ObservedAnnotation extends HTMLElement {
   connectedCallback() {
-    observer.observe(this);
+    if (this.isConnected) observer.observe(this);
   }
 
   disconnectedCallback() {
-    observer.disconnect(this);
+    observer.unobserve(this);
   }
 }
 
