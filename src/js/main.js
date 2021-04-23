@@ -10,9 +10,11 @@ var container = $.one("main.speech");
 var updateAnnotations = function (newSpeech) {
   // collect annotations that have been seen before
   var tagged = $("[data-seen]");
+
   morphdom(container, newSpeech, {});
   // put those attributes back
-  tagged.forEach(el => el.dataset.seen = true);
+  removeUnpublishedLinks();
+  tagged.forEach(el => (el.dataset.seen = true));
 };
 
 var refresh = async function () {
@@ -23,7 +25,7 @@ var refresh = async function () {
 
     var speech = $.one("main.speech", updated);
     if (!speech) throw "Remote document was missing content.";
-    
+
     updateAnnotations(speech);
   } catch (err) {
     console.error(err);
@@ -32,4 +34,18 @@ var refresh = async function () {
   // TODO: maybe add event send/update code here
 };
 
-setInterval(refresh, flags.refresh * 1000);
+var removeUnpublishedLinks = function () {
+  var annos = $(".annotation").map(a => a.id);
+  $("main.speech > *:not(.annotation) a").forEach(function (tag, i) {
+    // Is there a more built in way to get this without using split
+    var link = tag.href.split("#");
+    if (!link[1] || !annos.includes(link[1])) {
+      tag.href = "";
+    }
+  });
+};
+
+var initializePage = (function () {
+  removeUnpublishedLinks();
+  setInterval(refresh, flags.refresh * 1000);
+})();
