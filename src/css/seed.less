@@ -1,148 +1,159 @@
 @import "base";
 
-
 // For ease of editing, so we don't have to repeat as much with the vis-enabled
 .annotation-base() {
-    box-sizing: border-box;
-    opacity: 1;
-    background-color: @quote-gray;
-    border: 2px solid @quote-border;
-    padding: 1em;
-    margin: 0 0 3em;
-    max-height: 9999px;
-    transition: all 600ms linear;
-    position: relative;
+  box-sizing: border-box;
+  opacity: 1;
+  background-color: @quote-gray;
+  border: 2px solid @quote-border;
+  padding: 1em;
+  margin: 0 0 3em;
+  max-height: 9999px;
+  transition: all 600ms linear;
+  position: relative;
 
-    .annotations-wrapper, .annotation-header {
-        opacity: 1;
-        transition: opacity 600ms linear;
-    }
+  .annotations-wrapper,
+  .annotation-header {
+    opacity: 1;
+    transition: opacity 600ms linear;
+  }
 }
 
 .annotation {
-    .annotation-base();
+  display: block;
 
-    &.draft {
-        background-color: @orange !important;
-    }
+  .annotation-base();
 
-    &.unread {
-        border: 2px solid @highlight;
-        background: @highlight-pale;
-    }
+  &.draft {
+    background-color: @orange !important;
+  }
 
-    &.offscreen, &.offscreen.unread {
-        max-height: 0;
-        overflow: hidden;
-        border-color: transparent;
-        border-top-width: 0;
-        border-bottom-width: 0;
-        padding: 0 1em;
-        margin: 0;
-        opacity: 0;
+  &.unread {
+    border: 2px solid @highlight;
+    background: @highlight-pale;
+  }
 
-        .annotations-wrapper, .annotation-header {
-            opacity: 0;
-        }
-    }
+  &.offscreen,
+  &.offscreen.unread {
+    max-height: 0;
+    overflow: hidden;
+    border-color: transparent;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    padding: 0 1em;
+    margin: 0;
+    opacity: 0;
 
-    .annotation-nav{
-      position: absolute;
-      bottom: -2em;
-      .sans-serif();
-      font-size: 0.75rem;
-      left: 0;
-      width: 100%;
-
-      a{
-          color: @text-gray;
-          -webkit-text-size-adjust: 100%;
-          &:hover{
-            color: lighten(@text-gray, 15%);
-          }
-      }
-
-      .noShow{
-        display: none;
-      }
-
-      .nextNav{
-        float: right;
-      }
-
-      .triangleIcon{
-        font-size: .75em;
-      }
-    }
-
-    // Disable unread style for embeds with no visibility tracking
-    .vis-not-available &, body.after.vis-not-available & {
-        &.unread, &.offscreen, &.offscreen.unread {
-            .annotation-base();
-        }
-    }
-    body.after & {
-        &.offscreen {
-            .annotation-base();
-        }
-
-        &.unread, &.offscreen.unread {
-            // border: 2px solid @highlight;
-            // background: @highlight-pale;
-        }
-    }
-
-    @byline-height: 40px;
-
+    .annotations-wrapper,
     .annotation-header {
-        display: flex;
+      opacity: 0;
+    }
+  }
+
+  .annotation-nav {
+    position: absolute;
+    bottom: -2em;
+    .sans-serif();
+    font-size: 0.75rem;
+    left: 0;
+    width: 100%;
+
+    a {
+      color: @text-gray;
+      -webkit-text-size-adjust: 100%;
+      &:hover {
+        color: lighten(@text-gray, 15%);
+      }
     }
 
-    .annotation-label {
-        display: inline-block;
-        margin-right: 0.5em;
-        width: @byline-height;
-        height: @byline-height;
-        outline: none;
-
-        &.no-img {
-            display: none;
-        }
+    .noShow {
+      display: none;
     }
 
-    .annotation-byline {
-        .gotham();
-        font-size: 0.8rem;
-        display: inline-block;
-
-        a, span {
-            display: block;
-            line-height: 1.2rem;
-
-            &.byline-name {
-                font-weight: bold;
-            }
-        }
+    .nextNav {
+      float: right;
     }
 
-    p {
-        .gotham();
+    .triangleIcon {
+      font-size: 0.75em;
+    }
+  }
+
+  // Disable unread style for embeds with no visibility tracking
+  .vis-not-available &,
+  body.after.vis-not-available & {
+    &.unread,
+    &.offscreen,
+    &.offscreen.unread {
+      .annotation-base();
+    }
+  }
+  body.after & {
+    &.offscreen {
+      .annotation-base();
     }
 
-    table, th, td {
-        border-collapse: collapse;
-        border: 1px solid black;
+    &.unread,
+    &.offscreen.unread {
+      // border: 2px solid @highlight;
+      // background: @highlight-pale;
     }
+  }
 
-    table {
-        margin: 10px;
+  @byline-height: 40px;
+
+  .annotation-header {
+    display: flex;
+  }
+
+  .annotation-label {
+    display: inline-block;
+    margin-right: 0.5em;
+    width: @byline-height;
+    height: @byline-height;
+    outline: none;
+
+    &.no-img {
+      display: none;
     }
+  }
+
+  .annotation-byline {
+    .gotham();
+    font-size: 0.8rem;
+    display: inline-block;
+
+    a,
+    span {
+      display: block;
+      line-height: 1.2rem;
+
+      &.byline-name {
+        font-weight: bold;
+      }
+    }
+  }
+
+  p {
+    .gotham();
+  }
+
+  table,
+  th,
+  td {
+    border-collapse: collapse;
+    border: 1px solid black;
+  }
+
+  table {
+    margin: 10px;
+  }
 }
 
 body > p > a {
-    font-weight: normal;
-    border-bottom: 4px solid @highlight;
-    line-height: 1.9rem;
-    padding-bottom: 3px;
-    color: inherit;
+  font-weight: normal;
+  border-bottom: 4px solid @highlight;
+  line-height: 1.9rem;
+  padding-bottom: 3px;
+  color: inherit;
 }
