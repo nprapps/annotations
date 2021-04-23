@@ -49,3 +49,6 @@ var initializePage = (function () {
   removeUnpublishedLinks();
   setInterval(refresh, flags.refresh * 1000);
 })();
+
+// activate live features
+document.body.classList.add("javascript");

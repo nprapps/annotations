@@ -1,74 +1,93 @@
 @import "base";
+@import "annotation";
 
-p > a[href^="#annotation"]  {
+main.speech {
+  max-width: 800px;
+  padding: 0 16px;
+  margin: auto;
+
+  & > *:not(.annotation) a[href] {
     font-weight: normal;
     border-bottom: 4px solid @highlight;
     line-height: 1.9rem;
     padding-bottom: 3px;
-    color: inherit;  
+    color: inherit; 
+
+    .javascript & {
+      border-bottom: 4px solid @highlight;
+    }
+  }
 }
 
-.annotation {
-    box-sizing: border-box;
-    opacity: 1;
-    background-color: @quote-gray;
-    border: 2px solid @quote-border;
-    padding: 1em;
-    margin: 0 0 3em;
-    max-height: 9999px;
-    transition: all 600ms linear;
-    position: relative;
-    display: block;
+// p > a {
+//     font-weight: normal;
+//     border-bottom: 4px solid @highlight;
+//     line-height: 1.9rem;
+//     padding-bottom: 3px;
+//     color: inherit;
+// }
 
-    .annotations-wrapper,
-    .annotation-header {
-        opacity: 1;
-        transition: opacity 600ms linear;
-    }
+// .annotation {
+//     box-sizing: border-box;
+//     opacity: 1;
+//     background-color: @quote-gray;
+//     border: 2px solid @quote-border;
+//     padding: 1em;
+//     margin: 0 0 3em;
+//     max-height: 9999px;
+//     transition: all 600ms linear;
+//     position: relative;
+//     display: block;
 
-    &[data-seen=false] {
-        border: 2px solid @highlight;
-        background: @highlight-pale;
-    }
+//     .annotations-wrapper,
+//     .annotation-header {
+//         opacity: 1;
+//         transition: opacity 600ms linear;
+//     }
 
-    .annotation-nav {
-        position: absolute;
-        bottom: -2em;
-        .sans-serif();
-        font-size: 0.75rem;
-        left: 0;
-        width: 100%;
+//     &[data-seen=false] {
+//         border: 2px solid @highlight;
+//         background: @highlight-pale;
+//     }
 
-        a {
-            color: @text-gray;
-            -webkit-text-size-adjust: 100%;
-            &:hover {
-                color: lighten(@text-gray, 15%);
-            }
-        }
+//     .annotation-nav {
+//         position: absolute;
+//         bottom: -2em;
+//         .sans-serif();
+//         font-size: 0.75rem;
+//         left: 0;
+//         width: 100%;
 
-        .next {
-            float: right;
-        }
-    }
+//         a {
+//             color: @text-gray;
+//             -webkit-text-size-adjust: 100%;
+//             &:hover {
+//                 color: lighten(@text-gray, 15%);
+//             }
+//         }
 
-    .annotation-byline {
-        .gotham();
-        font-size: 0.8rem;
-        display: inline-block;
+//         .next {
+//             float: right;
+//         }
+//     }
 
-        a,
-        span {
-            display: block;
-            line-height: 1.2rem;
+//     .annotation-byline {
+//         .gotham();
+//         font-size: 0.8rem;
+//         display: inline-block;
 
-            &.byline-name {
-                font-weight: bold;
-            }
-        }
-    }
+//         a,
+//         span {
+//             display: block;
+//             line-height: 1.2rem;
 
-    p {
-        .gotham();
-    }
-}
+//             &.byline-name {
+//                 font-weight: bold;
+//             }
+//         }
+//     }
+
+//     p {
+//         .gotham();
+//     }
+// }
