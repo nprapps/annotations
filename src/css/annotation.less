@@ -5,7 +5,22 @@
   .content {
     padding: 16px;
     background: @quote-gray;
-    border: 1px solid @quote-border;
+    border: 2px solid @quote-border;
+  }
+
+  &:not([data-seen="true"]) {
+    .content {
+      border: 2px solid @highlight;
+      background: @highlight-pale;
+    }
+  }
+
+  &[data-seen="true"] {
+    .content {
+      transition-property: background, border;
+      transition-duration: 5s;
+      transition-timing-function: linear;
+    }
   }
 
   .metadata {
@@ -38,7 +53,8 @@
       color: inherit;
       float: left;
 
-      &:hover, &:focus {
+      &:hover,
+      &:focus {
         color: black;
       }
 

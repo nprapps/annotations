@@ -1,5 +1,6 @@
 @import "base";
 @import "annotation";
+@import "updates";
 
 main.speech {
   max-width: 800px;
@@ -45,7 +46,7 @@ main.speech {
 //         transition: opacity 600ms linear;
 //     }
 
-//     &[data-seen=false] {
+//     &:not[data-seen=false] {
 //         border: 2px solid @highlight;
 //         background: @highlight-pale;
 //     }

@@ -1,4 +1,5 @@
-<% var speech = grunt.data.archieml.speech.speech; var annotations =
+<% var speech = grunt.data.archieml.speech.speech; 
+var annotations =
 speech.filter(b => b.type == "annotation" && b.value.published); %>
 <!DOCTYPE html>
 <html lang="en-US">
@@ -7,6 +8,7 @@ speech.filter(b => b.type == "annotation" && b.value.published); %>
     <link rel="stylesheet" type="text/css" href="style.css" />
   </head>
   <body>
+    <%= t.include("partials/_annotationOverview.html") %>
     <main class="speech">
       <% speech.forEach(function(block, i) { var annoIndex =
       annotations.indexOf(block); var previous = annotations[annoIndex - 1]; var
@@ -23,9 +25,9 @@ speech.filter(b => b.type == "annotation" && b.value.published); %>
           <%= t.renderMarkdown(block.value.text) %>
 
           <div class="metadata">
-            <% if (block.mug) { %>
+            <% if (block.value.image) { %>
             <div class="mugshot">
-              <img src="<%= block.mug %>" />
+              <img src="<%= block.value.image %>" />
             </div>
             <% } %>
             <div class="byline">
@@ -56,5 +58,6 @@ speech.filter(b => b.type == "annotation" && b.value.published); %>
       <script src="app.js" async></script>
       <%= t.include("partials/_analytics.html") %>
     </main>
+    <%= t.include("partials/_newAnnotations.html") %>
   </body>
 </html>

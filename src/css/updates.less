@@ -1,0 +1,61 @@
+.update {
+    max-width: 800px;
+    padding: 0 16px;
+    margin: auto;
+
+    .update-content {
+        background: @black;
+        color: @white;
+        padding: 1em 1em 0.7em;
+    }
+
+    .update-nav {
+        .sans-serif();
+        font-size: 0.75rem;
+        line-height: 1.5rem;
+        margin: 0;
+        color: @text-gray;
+        border-top: 1px solid darken(@text-gray, 20%);
+        padding: 0.7em 0 0;
+
+        .last-updated {
+            color: @text-gray;
+        }
+
+        .num-annotations {
+            font-weight: bold;
+            color: @brightwhite;
+        }
+
+        .jump-to {
+            float: right;
+            color: @text-gray;
+
+            &.top {
+                &:after {
+                    content: "\2191";
+                    margin-left: 5px;
+                }
+            }
+
+            &.bottom {
+                &:after {
+                    content: "\2193";
+                    margin-left: 5px;
+                }
+            }
+        }
+    }
+
+    .notice {
+        .gotham();
+        border: 2px solid @highlight;
+        background: @highlight-pale;
+        padding: 0.7em 1em;
+        color: @black;
+
+        .update-number {
+            font-weight: bold;
+        }
+    }
+}
