@@ -20,7 +20,12 @@ User=ubuntu
 Environment=<%= k %>=<%= env[k] %>
 <% } %>
 WorkingDirectory=<%= here %>
-ExecStart=<%= home %>/.nvm/nvm-exec grunt docs static publish:live deploy-live
+
+# Stage - uncomment to activate
+# ExecStart=<%= home %>/.nvm/nvm-exec grunt deploy
+
+# Live - uncomment to activate
+# ExecStart=<%= home %>/.nvm/nvm-exec grunt deploy-live
 
 [Install]
 WantedBy=multi-user.target

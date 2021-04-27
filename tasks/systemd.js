@@ -4,8 +4,6 @@ module.exports = function(grunt) {
 
   grunt.registerTask("systemd", "Generate a valid systemd service file", function() {
 
-    console.log("s");
-
     var template = grunt.file.read("tasks/lib/annotation.service.template");
     var env = {
       GOOGLE_OAUTH_CLIENT_ID: null,
