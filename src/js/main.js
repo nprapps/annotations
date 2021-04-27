@@ -68,3 +68,22 @@ var initializePage = (function () {
 
 // activate live features
 document.body.classList.add("javascript");
+
+// set listeners for link<->annotation connection
+document.body.addEventListener("click", function(e) {
+  var link = e.target.closest(`[href^="#annotation"]`);
+  if (link) {
+    e.preventDefault();
+    var annotation = $.one(link.getAttribute("href"));
+    annotation.scrollIntoView({ behavior: "smooth", block: "center" });
+    annotation.querySelector(".content").animate([
+      { borderColor: "", background: "" },
+      { borderColor: "#efc637", background: "#f5ebc8" },
+      { borderColor: "", background: "" }
+    ], {
+      fill: "both",
+      duration: 1000
+    });
+    return;
+  }
+});
