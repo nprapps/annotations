@@ -4,11 +4,11 @@ var os = require("os");
 var path = require("path");
 var { authenticate } = require("./googleauth");
 
-module.exports = function(grunt) {
+module.exports = function (grunt) {
   grunt.registerTask(
     "docs",
     "Load Google Docs into the data folder",
-    function() {
+    function () {
       var config = grunt.file.readJSON("project.json");
       var auth = null;
       try {
@@ -27,7 +27,7 @@ module.exports = function(grunt) {
       var formatters = {
         link: (text, style) => `<a href="${style.link.url}">${text}</a>`,
         bold: text => `<b>${text}</b>`,
-        italic: text => `<i>${text}</i>`
+        italic: text => `<i>${text}</i>`,
       };
 
       /*
@@ -38,7 +38,7 @@ module.exports = function(grunt) {
       async.eachLimit(
         Object.keys(config.docs),
         2, // adjust this up or down based on rate limiting
-        async function(key) {
+        async function (key) {
           var documentId = config.docs[key];
           var suggestionsViewMode = "PREVIEW_WITHOUT_SUGGESTIONS";
           var docResponse = await docs.get({ documentId, suggestionsViewMode });
@@ -48,7 +48,7 @@ module.exports = function(grunt) {
 
           var lists = docResponse.data.lists;
 
-          body.forEach(function(block) {
+          body.forEach(function (block) {
             if (!block.paragraph) return;
             if (block.paragraph.bullet) {
               var list = lists[block.paragraph.bullet.listId];
@@ -63,12 +63,10 @@ module.exports = function(grunt) {
               var indent = "  ".repeat(level);
               text += indent + bullet;
             }
-            block.paragraph.elements.forEach(function(element) {
+            block.paragraph.elements.forEach(function (element) {
               if (!element.textRun) return;
               var { content, textStyle } = element.textRun;
               if (content.trim())
-                var match = content.match(/^[ \t]*\[\w+/);
-                if (match) content = `\\${content.trim()}`;
                 for (var f in formatters) {
                   if (textStyle[f]) {
                     var [_, before, inside, after] = content.match(
@@ -83,10 +81,24 @@ module.exports = function(grunt) {
 
           text = text.replace(/\x0b/g, "\n");
 
+          // Replace all instances of [] tags on newlines after speech starts.
+          var speechRe = /\[\+speech\]/g;
+          speechRe.exec(text);
+          if (speechRe.lastIndex) {
+            var startText = text.slice(0, speechRe.lastIndex);
+            var speechText = text.slice(speechRe.lastIndex);
+            text =
+              startText +
+              speechText.replace(
+                /(\n*[ \t]*)(\[[\w\s]+\])([ \t]*\n*)/g,
+                addBackslash
+              );
+          }
+
           console.log(`Writing document as data/${name}`);
           grunt.file.write(path.join("data", name), text);
         },
-        function(err) {
+        function (err) {
           if (err) {
             console.log("Uncaught error in docs:");
             console.log(err);
@@ -97,3 +109,7 @@ module.exports = function(grunt) {
     }
   );
 };
+
+function addBackslash(str, p1, p2, p3, offset, s) {
+  return p1 + "\\" + p2 + p3;
+}
