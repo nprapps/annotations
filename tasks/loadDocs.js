@@ -64,10 +64,11 @@ module.exports = function(grunt) {
               text += indent + bullet;
             }
             block.paragraph.elements.forEach(function(element) {
-              // console.log(element);
               if (!element.textRun) return;
               var { content, textStyle } = element.textRun;
               if (content.trim())
+                var match = content.match(/^[ \t]*(\[\w+])/);
+                if (match) content = `\\${content}`;
                 for (var f in formatters) {
                   if (textStyle[f]) {
                     var [_, before, inside, after] = content.match(
