@@ -67,8 +67,8 @@ module.exports = function(grunt) {
               if (!element.textRun) return;
               var { content, textStyle } = element.textRun;
               if (content.trim())
-                var match = content.match(/^[ \t]*(\[\w+])/);
-                if (match) content = `\\${content}`;
+                var match = content.match(/^[ \t]*\[\w+/);
+                if (match) content = `\\${content.trim()}`;
                 for (var f in formatters) {
                   if (textStyle[f]) {
                     var [_, before, inside, after] = content.match(
