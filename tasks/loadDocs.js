@@ -88,11 +88,7 @@ module.exports = function (grunt) {
             var startText = text.slice(0, speechRe.lastIndex);
             var speechText = text.slice(speechRe.lastIndex);
             text =
-              startText +
-              speechText.replace(
-                /(\n*[ \t]*)(\[[\w\s]+\])([ \t]*\n*)/g,
-                addBackslash
-              );
+              startText + speechText.replace(/^([ \t]*)(\[\w)/gm, "$1\\$2");
           }
 
           console.log(`Writing document as data/${name}`);
@@ -109,7 +105,3 @@ module.exports = function (grunt) {
     }
   );
 };
-
-function addBackslash(str, p1, p2, p3, offset, s) {
-  return p1 + "\\" + p2 + p3;
-}
