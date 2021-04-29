@@ -10,10 +10,14 @@ speech.filter(b => b.type == "annotation" && b.value.published); %>
   <body>
     <%= t.include("partials/_annotationOverview.html") %>
     <main class="speech">
-      <% speech.forEach(function(block, i) { var annoIndex =
-      annotations.indexOf(block); var previous = annotations[annoIndex - 1]; var
-      next = annotations[annoIndex + 1]; if (block.type == "text") {
-      print(t.renderMarkdown(block.value)) } else if (block.value.published) {
+      <% speech.forEach(function(block, i) { 
+        var annoIndex = annotations.indexOf(block);
+        var previous = annotations[annoIndex - 1];
+        var next = annotations[annoIndex + 1];
+        if (typeof block.value == "string") {
+          var value = block.type == "text" ? block.value : `${block.type}: ${block.value}`;
+          print(t.renderMarkdown(value))
+        } else if (block.value.published) {
       %>
 
       <observed-annotation
