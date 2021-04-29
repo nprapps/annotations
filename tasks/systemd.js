@@ -1,14 +1,17 @@
 module.exports = function(grunt) {
   var os = require("os");
   var path = require("path");
+  var child = require("child_process");
 
   grunt.registerTask("systemd", "Generate a valid systemd service file", function() {
 
     var template = grunt.file.read("tasks/lib/annotation.service.template");
+    var node = child.execSync("node -v", { encoding: "utf-8" }).trim().replace("v", "");
+
     var env = {
       GOOGLE_OAUTH_CLIENT_ID: null,
       GOOGLE_OAUTH_CONSUMER_SECRET: null,
-      NODE_VERSION: 12
+      NODE_VERSION: node
     }
     for (var v in env) {
       if (env[v] === null) {
