@@ -1,7 +1,13 @@
+var ANNOTATION_VISIBILITY = "annotationvisibility";
+
 var observer = new IntersectionObserver(function(list) {
   for (var observation of list) {
-    if (observation.isIntersecting) {
-      observation.target.dataset.seen = true;
+    var { target, isIntersecting } = observation;
+    if (isIntersecting) {
+      if ("seen" in target.dataset) continue;
+      target.dataset.seen = true;
+      var event = new CustomEvent(ANNOTATION_VISIBILITY, { bubbles: true, composed: true });
+      target.dispatchEvent(event);
     }
   }
 });
@@ -17,3 +23,8 @@ class ObservedAnnotation extends HTMLElement {
 }
 
 window.customElements.define("observed-annotation", ObservedAnnotation);
+
+module.exports = {
+  ObservedAnnotation,
+  ANNOTATION_VISIBILITY
+}

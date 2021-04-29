@@ -1,13 +1,16 @@
 // observable annotation elements
-require("./observed-annotation");
 
+var $ = require("./lib/qsa");
+var debounce = require("./lib/debounce");
+
+var { ANNOTATION_VISIBILITY } = require("./observed-annotation");
 var morphdom = require("morphdom");
 var getDocument = require("./getDocument");
 var flags = require("./flags");
-var $ = require("./lib/qsa");
+
 var container = $.one("main.speech");
 
-var { DateFormatter, plural} = require('./util.js');
+var { DateFormatter, plural } = require('./util.js');
 
 var updateAnnotations = function (newSpeech, lastModified) {
   // collect annotations that have been seen before
@@ -56,7 +59,7 @@ const updateOverview = function() {
   
   
   // TODO: add in current unseen 
-  var numNew = 0 || 'no';
+  var numNew = $(".annotation:not([data-seen])").length || 'no';
   $.one('.update-number').innerHTML = `${numNew} annotation${plural(0)}`
 }
 
@@ -87,3 +90,5 @@ document.body.addEventListener("click", function(e) {
     return;
   }
 });
+
+container.addEventListener(ANNOTATION_VISIBILITY, debounce(updateOverview));
