@@ -3,7 +3,7 @@ var body = doc.getBody();
 var headings = DocumentApp.ParagraphHeading;
 
 var p = function(index, text) {
-  return body.insertParagraph(index, text || '');
+  return body.insertParagraph(index, text || '').setForegroundColor('#0000FF');
 };
 
 var h4 = function(index, text) {
@@ -100,4 +100,24 @@ function openDraftPanel() {
   var html = HtmlService.createHtmlOutput(template("addAnnotationPanel", data)).setTitle("Configure add-on");
   var ui = DocumentApp.getUi();
   ui.showSidebar(html);
+}
+
+function publishAnnotation() {
+  var selection = doc.getSelection();
+  var cursor = doc.getCursor();
+  var now = new Date();
+  var date = now.toISOString();
+  var replacer = "false|\\d[\\dT\\.:-]+Z";
+  var element;
+  if (selection) {
+    var elements = selection.getRangeElements();
+    var start = elements[0];
+    element = start.getElement();
+  } else {
+    element = cursor.getElement();
+  }
+  var text = element.editAsText();
+  var content = text.getText();
+  if (!content.match(/published: /)) throw "Cursor is not placed on a publish line";
+  text.replaceText(replacer, date);
 }
