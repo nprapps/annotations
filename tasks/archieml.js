@@ -22,7 +22,13 @@ module.exports = function(grunt) {
       var contents = grunt.file.read(f);
 
       var parsed = betty.parse(contents, {
-        onFieldName: t => t[0].toLowerCase() + t.slice(1)
+        onFieldName: t => t[0].toLowerCase() + t.slice(1),
+        onValue: function(v) {
+          if (v == "true" || v == "false") {
+            return v != "false";
+          }
+          return v;
+        }
       });
       grunt.data.archieml[name] = parsed;
     });
