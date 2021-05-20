@@ -3,7 +3,7 @@ var body = doc.getBody();
 var headings = DocumentApp.ParagraphHeading;
 
 var p = function(index, text) {
-  return body.insertParagraph(index, text || '').setForegroundColor('#0000FF');
+  return body.insertParagraph(index, text || '');
 };
 
 var h4 = function(index, text) {
@@ -51,12 +51,18 @@ function getParagraph(id) {
 
 function addDraftAnnotation(draft) {
   var date = new Date();
-  var slug = 'annotation-' + (String(date.getMinutes()) + 
-    String(date.getSeconds()) + String(date.getUTCMilliseconds()));
+  // Get last anno id and increase
+  var props = PropertiesService.getDocumentProperties();
+  var anno_num = _getNumProperty(props, 'ANNO_ID');
+  anno_num = anno_num ? anno_num + 1 : 1;
+
+  var slug = 'annotation-' + anno_num;
 
   var index = getParagraph(slug);
   draft.id = slug;
-  addAnnotationText(draft, index)
+  addAnnotationText(draft, index);
+  // Set last anno id if everything was successful.
+  props.setProperty("ANNO_ID", anno_num);
 }
 
 function addAnnotationText(draft, index) {
