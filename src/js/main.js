@@ -60,7 +60,7 @@ const updateOverview = function() {
   
   // TODO: add in current unseen 
   var numNew = $(".annotation:not([data-seen])").length || 'no';
-  $.one('.update-number').innerHTML = `${numNew} annotation${plural(0)}`
+  $.one('.update-number').innerHTML = `${numNew} annotation${plural(numNew)}`
 }
 
 var initializePage = (function () {
