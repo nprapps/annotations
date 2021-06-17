@@ -62,6 +62,7 @@ var updateOverview = function () {
   $.one(".num-annotations").innerHTML = `${numAll} annotation${plural(numAll)}`;
 
   var numRead = $(".annotation[data-seen]").length;
+  // New (updated & unseen) annotations since visit
   var annotationsNew = annotationsAll.filter(
     el => !annotationsOnVisit.has(el.id) && el.dataset.seen !== "true"
   );
@@ -71,17 +72,31 @@ var updateOverview = function () {
   var nodeNumber = $.one(".update-number");
 
   if (numNew === 0) {
+    // No new annotations. Show annotation count
     nodeNumber.innerHTML =
       numRead === numAll ? "&#10003;" : `${numRead}/${numAll} read`;
+    // Hide new annotations notice
+    nodeNotice.href = "#0";
     nodeNotice.innerHTML = "";
   } else {
+    // There's at least one new annotation post-refresh
+    var positions = annotationsNew.map(el => ({
+      id: el.id,
+      y: el.getBoundingClientRect().top,
+    }));
+    // Find topmost new annotation (smallest y) to scroll to
+    var positionTopmost = positions.reduce(
+      (top, curr) => (top = curr.y < top.y ? curr : top)
+    );
+    // Show new annotations notice
+    nodeNotice.href = `#${positionTopmost.id}`;
     nodeNotice.innerHTML = "New annotations were added";
+    // Hide annotation count
     nodeNumber.innerHTML = "";
   }
 };
 
 var initializePage = function () {
-  console.log("Hello!");
   updateOverview();
   removeUnpublishedLinks();
   setInterval(refresh, flags.refresh * 1000);
