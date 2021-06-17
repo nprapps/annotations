@@ -13,9 +13,9 @@
     padding: 0.7em 1em;
     color: @black;
 
-    .update-number {
+    /*.update-number {
       font-weight: bold;
-    }
+    }*/
   }
 }
 
@@ -31,7 +31,13 @@
   top: 0;
   z-index: 1;
 
+  a {
+    color: @text-gray;
+  }
+
   .update-status {
+    display: flex;
+    justify-content: space-between;
     font-size: 0.75rem;
   }
 
@@ -39,10 +45,18 @@
     color: @text-gray;
   }
 
-  .jump-to {
-    float: right;
-    color: @text-gray;
+  .notice-wrapper {
+    font-weight: bold;
 
+    .update-notice {
+      &:hover,
+      &:focus {
+        color: @white;
+      }
+    }
+  }
+
+  .jump-to {
     &.top {
       &:after {
         content: "\2191";
@@ -50,7 +64,7 @@
       }
     }
 
-    &.bottom {
+    .bottom {
       &:after {
         content: "\2193";
         margin-left: 5px;

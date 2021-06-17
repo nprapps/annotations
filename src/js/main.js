@@ -12,9 +12,12 @@ var container = $.one("main.speech");
 
 var { DateFormatter, plural } = require("./util.js");
 
+// Annotation IDs that appear on visit, to differentiate from ones appearing upon refresh
+var annotationsOnVisit = new Set($(".annotation").map(el => el.id));
+
 var updateAnnotations = function (newSpeech, lastModified) {
   // collect annotations that have been seen before
-  var tagged = $("[data-seen]");
+  var tagged = $(".annotation[data-seen]");
 
   morphdom(container, newSpeech, {});
   // put those attributes back
@@ -54,12 +57,27 @@ var updateOverview = function () {
   var time = DateFormatter(new Date());
   $(".last-updated").forEach(t => (t.innerHTML = `Last Updated: ${time}`));
 
-  var numAll = $(".annotation").length;
+  var annotationsAll = $(".annotation");
+  var numAll = annotationsAll.length;
   $.one(".num-annotations").innerHTML = `${numAll} annotation${plural(numAll)}`;
 
-  // TODO: add in current unseen
-  var numNew = $(".annotation:not([data-seen])").length || "no";
-  $.one(".update-number").innerHTML = `${numNew} annotation${plural(numNew)}`;
+  var numRead = $(".annotation[data-seen]").length;
+  var annotationsNew = annotationsAll.filter(
+    el => !annotationsOnVisit.has(el.id) && el.dataset.seen !== "true"
+  );
+  var numNew = annotationsNew.length;
+
+  var nodeNotice = $.one(".update-notice");
+  var nodeNumber = $.one(".update-number");
+
+  if (numNew === 0) {
+    nodeNumber.innerHTML =
+      numRead === numAll ? "&#10003;" : `${numRead}/${numAll} read`;
+    nodeNotice.innerHTML = "";
+  } else {
+    nodeNotice.innerHTML = "New annotations were added";
+    nodeNumber.innerHTML = "";
+  }
 };
 
 var initializePage = function () {
